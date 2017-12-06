@@ -13,13 +13,13 @@ public class Malt {
 	@GeneratedValue
 	private int id;
 	private String maltName;
-	private double maltWeight;
+	private String maltWeight;
 	
 	public Malt() {
 		
 	}
 
-	public Malt(String maltName, double maltWeight) {
+	public Malt(String maltName, String maltWeight) {
 		super();
 		this.maltName = maltName;
 		this.maltWeight = maltWeight;
@@ -33,11 +33,11 @@ public class Malt {
 		this.maltName = maltName;
 	}
 
-	public double getMaltWeight() {
+	public String getMaltWeight() {
 		return maltWeight;
 	}
 
-	public void setMaltWeight(double maltWeight) {
+	public void setMaltWeight(String maltWeight) {
 		this.maltWeight = maltWeight;
 	}
 

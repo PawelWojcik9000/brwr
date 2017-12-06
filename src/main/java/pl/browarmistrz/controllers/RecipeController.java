@@ -1,17 +1,13 @@
 package pl.browarmistrz.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import pl.browarmistrz.dao.RecipeDAO;
-import pl.browarmistrz.entities.Malt;
 import pl.browarmistrz.entities.Recipe;
 
 @Controller
@@ -20,23 +16,18 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeDAO recipeDAO;
-	
 
-
-	@RequestMapping("/addedrecipe")
-	public String addedRecipe(HttpServletRequest request) {
-		String brewName = request.getParameter("brewName");
-		
-		System.out.println(brewName);
-
-		Recipe recipe = new Recipe(brewName);
-		recipeDAO.saveRecipe(recipe);
-		return "addedrecipe";
+	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
+	public String showRegistrationForm(Model model) {
+		model.addAttribute("recipe", new Recipe());
+		return "addrecipe";
 	}
 
-	@RequestMapping("/addrecipe")
-	public String addRecipe() {
-		return "addrecipe";
+	@RequestMapping(value = "/addrecipe", method = RequestMethod.POST)
+	public String processForm(@ModelAttribute Recipe recipe) {
+		System.out.println(recipe.getBrewName());
+		recipeDAO.saveRecipe(recipe);
+		return "addedrecipe";
 	}
 
 }
