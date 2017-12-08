@@ -9,26 +9,27 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
+import pl.browarmistrz.entities.Malt;
 import pl.browarmistrz.entities.Recipe;
 
 @Component
 @Transactional
-public class RecipeDAO {
-	
+public class MaltDAO {
+
 	@PersistenceContext
 	EntityManager entityManager;
 	
-	public void saveRecipe(Recipe entity) {
+	public void saveMalt(Malt entity) {
 		entityManager.persist(entity);
 	}
 	
-	public List<Recipe> getRecipes() {
-		Query query = entityManager.createQuery("SELECT b FROM Recipe b");
-		List<Recipe> recipes = query.getResultList();
-		return recipes;
+	public List<Malt> getMalts() {
+		Query query = entityManager.createQuery("SELECT b FROM Malt b");
+		List<Malt> malts = query.getResultList();
+		return malts;
 	}
 	
-	public Recipe findById(int id) {
-		return entityManager.find(Recipe.class, id);
+	public Malt findById(int id) {
+		return entityManager.find(Malt.class, id);
 	}
 }
