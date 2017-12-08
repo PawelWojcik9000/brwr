@@ -3,10 +3,10 @@ package pl.browarmistrz.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
-@Entity(name = "Malt")
-@Table(name = "malts")
+@Entity//(name = "Malt")
+//@Table(name = "malts")
 public class Malt {
 
 	@Id
@@ -14,6 +14,8 @@ public class Malt {
 	private int id;
 	private String maltName;
 	private String maltWeight;
+	@ManyToOne
+	private Recipe recipe;
 	
 	public Malt() {
 		
@@ -39,6 +41,14 @@ public class Malt {
 
 	public void setMaltWeight(String maltWeight) {
 		this.maltWeight = maltWeight;
+	}
+
+	public Recipe getRecipe() {
+		return recipe;
+	}
+	
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
 
 	

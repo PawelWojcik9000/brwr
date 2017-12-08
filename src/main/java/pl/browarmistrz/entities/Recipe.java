@@ -9,14 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
-@Entity(name = "Recipe")
-@Table(name = "recipes")
+@Entity//(name = "Recipe")
+//@Table(name = "recipes")
 public class Recipe {
 
 	@Id
@@ -24,8 +20,7 @@ public class Recipe {
 	private int recipeId;
 	@Column(length = 100, nullable = false)
 	private String brewName;
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "malts_id")
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
 	private List<Malt> malts = new ArrayList<Malt>();
 
 	public Recipe() {
@@ -71,7 +66,7 @@ public class Recipe {
 	public List<Malt> getMalts() {
 		return malts;
 	}
-
+	
 	public void setMalts(List<Malt> malts) {
 		this.malts = malts;
 	}
