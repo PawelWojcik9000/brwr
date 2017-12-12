@@ -1,18 +1,32 @@
 package pl.browarmistrz.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "additions")
 public class Addition {
 
-	private int additionId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	private String additionName;
-	private String additionAffectTime;
+	private String additionTime;
+	private String additionUse;
+	
+	@ManyToOne
+	private Recipe recipe;
 	
 	public Addition() {
 		
 	}
 
-	public Addition(String additionName, String additionAffectTime) {
-		this.additionName = additionName;
-		this.additionAffectTime = additionAffectTime;
+	public int getId() {
+		return id;
 	}
 
 	public String getAdditionName() {
@@ -23,22 +37,29 @@ public class Addition {
 		this.additionName = additionName;
 	}
 
-	public String getAdditionAffectTime() {
-		return additionAffectTime;
+	public String getAdditionTime() {
+		return additionTime;
 	}
 
-	public void setAdditionAffectTime(String additionAffectTime) {
-		this.additionAffectTime = additionAffectTime;
+	public void setAdditionTime(String additionTime) {
+		this.additionTime = additionTime;
 	}
 
-	public int getAdditionId() {
-		return additionId;
+	public String getAdditionUse() {
+		return additionUse;
 	}
 
-	public void setAdditionId(int additionId) {
-		this.additionId = additionId;
+	public void setAdditionUse(String additionUse) {
+		this.additionUse = additionUse;
 	}
+
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+
 	
-	
-
 }

@@ -18,38 +18,29 @@
 		<label>Słody:</label>
 		<table id="malts">
 			<tr>
-				<td><label>Nazwa: </label>
-				<form:input type="text" path="malts" /></td>
-				<td><label>Ilość(kg): </label>
-				<form:input type="text" path="malts" /></td>
+				<td><label>Nazwa: </label> <form:input type="text" path="malts[0].maltName" /></td>
+				<td><label>Ilość(kg): </label> <form:input type="text" path="malts[0].maltWeight" /></td>
 			</tr>
 		</table>
 		<input type="button" value="Kolejny słód" id="oneMoreMaltBtn">
 		<input type="button" value="Usuń ostatni" id="deleteLastMaltBtn">
-		<br>
+		<br> 
 
-
-		<%-- RESZTA DO PRZEROBIENIA NA SPRINGOWY FORM --%>
-		
 		<label>Czas zacierania słodów: </label>
-		<input type="text" name="mashTime">
+		<form:input type="text" path="mashTime" />
 		<br>
 		<label>Temperatura zacierania słodów: </label>
-		<input type="text" name="mashtemp">
+		<form:input type="text" path="mashTemp" />
 		<br>
 
 		<label>Chmiele: </label>
 		<table id="hops">
 			<tr>
-				<td><label>Nazwa: </label><input type="text" name="hopName"></td>
-				<td><label>Ilość(g): </label><input type="text"
-					name="hopWeight"></td>
-				<td><label>Alfakwasy: </label><input type="text"
-					name="alphaAcids"></td>
-				<td><label>Rok uprawy: </label><input type="text"
-					name="hopYear"></td>
-				<td><label>Czas gotowania chmielu(min): </label><input
-					type="text" name="hopBoilTime"></td>
+				<td><label>Nazwa: </label><form:input type="text" path="hops[0].hopName" /></td>
+				<td><label>Ilość(g): </label><form:input type="text" path="hops[0].hopWeight" /></td>
+				<td><label>Alfakwasy: </label><form:input type="text" path="hops[0].alphaAcids" /></td>
+				<td><label>Rok uprawy: </label><form:input type="text" path="hops[0].hopYear" /></td>
+				<td><label>Czas gotowania chmielu(min): </label><form:input type="text" path="hops[0].hopBoilTime" /></td>
 			</tr>
 		</table>
 		<input type="button" value="Kolejny chmiel" id="oneMoreHopBtn">
@@ -57,47 +48,48 @@
 		<br>
 
 		<label>Czas gotowania brzeczki: </label>
-		<input type="text" name="boilTime">
-		<br>
+			<form:input type="text" path="boilTime" /><br>
 		<label>Drożdże: </label>
-		<input type="text" name="yeastName">
+			<form:input type="text" path="yeast.yeastName" />
 		<label>Forma drożdży: </label>
-		<select name="yeastForm">
-			<option value="dry">Suche</option>
-			<option value="liquid">Płynne</option>
-			<option value="slurry">Gęstwa</option>
-		</select>
-		<label>Laboratorium (marka): </label>
-		<input type="text" name="yeastLab">
-		<label>Ilość drożdży(g): </label>
-		<input type="text" name="yeastWeight">
+		<form:select path="yeast.yeastForm">
+			<form:option value="dry" />Suche
+			<form:option value="liquid" />Płynne
+			<form:option value="slurry" />Gęstwa
+		</form:select>
+		<label>Laboratorium (marka): </label><form:input type="text" path="yeast.yeastLab" />
+		<label>Ilość drożdży(g): </label><form:input type="text" path="yeast.yeastWeight" />
+		
 		<label>Dodatek: </label>
 		<table id="additions">
 			<tr>
-				<td><label>Nazwa i ilość dodatku: </label><input type="text"
-					name="additionName"></td>
-				<td><label>Czas: </label><input type="text" name="additionTime">
-					<select name="additionUse">
-						<option value="additionBoiled">Gotowanie (minuty)</option>
-						<option value="additionEffervescentFermentation">Fermentacja
-							burzliwa (dni)</option>
-						<option value="additionSecondFermentation">Fermentacja
-							cicha (dni)</option>
-				</select></td>
+				<td><label>Nazwa i ilość dodatku: </label><form:input type="text" path="additions[0].additionName" /></td>
+				<td><label>Czas: </label><form:input type="text" path="additions[0].additionTime" />
+					<form:select path="additions[0].additionUse">
+						<form:option value="additionBoiled" />Gotowanie (minuty)
+						<form:option value="additionEffervescentFermentation" />Fermentacja burzliwa (dni)
+						<form:option value="additionSecondFermentation" />Fermentacja cicha (dni)
+					</form:select>
+				</td>
 			</tr>
 		</table>
 		<input type="button" value="Kolejny dodatek" id="oneMoreAdditionBtn">
 		<input type="button" value="Usuń ostatni" id="deleteLastAdditionBtn">
 		<br>
 
+<%--
+
 		<label>Ilość dni fermentacji burzliwej: </label>
-		<input type="text" name="effervescentFermentationDays">
+			<form:input type="text" path="effervescentFermentationDays" />
 		<br>
 		<label>Ilość dni fermentacji cichej: </label>
-		<input type="text" name="secondFermentationDays">
+			<form:input type="text" path="secondFermentationDays" />
 		<br>
 
+--%>
+
 		<input type="submit" value="Dodaj przepis">
+				
 	</form:form>
 
 </body>

@@ -2,29 +2,30 @@ package pl.browarmistrz.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity//(name = "Malt")
-//@Table(name = "malts")
+@Entity
+@Table(name = "malts")
 public class Malt {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String maltName;
 	private String maltWeight;
+	
 	@ManyToOne
 	private Recipe recipe;
-	
+
 	public Malt() {
-		
+
 	}
 
-	public Malt(String maltName, String maltWeight) {
-		super();
-		this.maltName = maltName;
-		this.maltWeight = maltWeight;
+	public int getId() {
+		return id;
 	}
 
 	public String getMaltName() {
@@ -46,10 +47,9 @@ public class Malt {
 	public Recipe getRecipe() {
 		return recipe;
 	}
-	
+
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 	}
 
-	
 }

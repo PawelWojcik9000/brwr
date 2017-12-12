@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import pl.browarmistrz.dao.AdditionDAO;
+import pl.browarmistrz.dao.HopDAO;
 import pl.browarmistrz.dao.MaltDAO;
 import pl.browarmistrz.dao.RecipeDAO;
+import pl.browarmistrz.dao.YeastDAO;
 import pl.browarmistrz.entities.Malt;
 import pl.browarmistrz.entities.Recipe;
 
@@ -18,11 +21,20 @@ import pl.browarmistrz.entities.Recipe;
 @RequestMapping("/recipe")
 public class RecipeController {
 
-	@Autowired
 	private RecipeDAO recipeDAO;
+	private MaltDAO maltDAO;
+	private HopDAO hopDAO;
+	private YeastDAO yeastDAO;
+	private AdditionDAO additionDAO;
 	
 	@Autowired
-	private MaltDAO maltDAO;
+	public RecipeController(RecipeDAO recipeDAO, MaltDAO maltDAO, HopDAO hopDAO, YeastDAO yeastDAO, AdditionDAO additionDAO) {
+		this.recipeDAO = recipeDAO;
+		this.maltDAO = maltDAO;
+		this.hopDAO = hopDAO;
+		this.yeastDAO = yeastDAO;
+		this.additionDAO = additionDAO;
+	}
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
 	public String showRegistrationForm(Model model) {
@@ -36,7 +48,7 @@ public class RecipeController {
 		recipeDAO.saveRecipe(recipe);
 		return "addedrecipe";
 	}
-	
+
 	@ModelAttribute("allmalts")
 	public Collection<Malt> malts() {
 		return this.maltDAO.getMalts();

@@ -1,32 +1,34 @@
 package pl.browarmistrz.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "hops")
 public class Hop {
 
-	private int hopId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	private String hopName;
-	private double hopWeight; 
-	private double alphaAcids;
-	private int hopYear;
-	private int hopBoilTime;
-	
+	private String hopWeight;
+	private String alphaAcids;
+	private String hopYear;
+	private String hopBoilTime;
+
+	@ManyToOne
+	private Recipe recipe;
+
 	public Hop() {
-		
+
 	}
 	
-	public Hop(String hopName, double hopWeight, double alphaAcids, int hopYear, int hopBoilTime) {
-		this.hopName = hopName;
-		this.hopWeight = hopWeight;
-		this.alphaAcids = alphaAcids;
-		this.hopYear = hopYear;
-		this.hopBoilTime = hopBoilTime;
-	}
-
-	public int getHopId() {
-		return hopId;
-	}
-
-	public void setHopId(int hopId) {
-		this.hopId = hopId;
+	public int getId() {
+		return id;
 	}
 
 	public String getHopName() {
@@ -36,38 +38,46 @@ public class Hop {
 	public void setHopName(String hopName) {
 		this.hopName = hopName;
 	}
-	
-	public double getHopWeight() {
+
+	public String getHopWeight() {
 		return hopWeight;
 	}
 
-	public void setHopWeight(double hopWeight) {
+	public void setHopWeight(String hopWeight) {
 		this.hopWeight = hopWeight;
 	}
 
-	public double getAlphaAcids() {
+	public String getAlphaAcids() {
 		return alphaAcids;
 	}
 
-	public void setAlphaAcids(double alphaAcids) {
+	public void setAlphaAcids(String alphaAcids) {
 		this.alphaAcids = alphaAcids;
 	}
 
-	public int getHopYear() {
+	public String getHopYear() {
 		return hopYear;
 	}
 
-	public void setHopYear(int hopYear) {
+	public void setHopYear(String hopYear) {
 		this.hopYear = hopYear;
 	}
 
-	public int getHopBoilTime() {
+	public String getHopBoilTime() {
 		return hopBoilTime;
 	}
 
-	public void setHopBoilTime(int hopBoilTime) {
+	public void setHopBoilTime(String hopBoilTime) {
 		this.hopBoilTime = hopBoilTime;
 	}
-	
 
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+	
+	
 }

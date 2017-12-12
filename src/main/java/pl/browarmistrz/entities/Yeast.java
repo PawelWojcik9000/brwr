@@ -1,31 +1,35 @@
 package pl.browarmistrz.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "yeasts")
 public class Yeast {
 
-	private int yeastId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	private String yeastName;
-	private double yeastWeight;
 	private String yeastForm;
 	private String yeastLab;
-	
+	private double yeastWeight;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	//@JoinColumn(name = "recipe_id")
+	private Recipe recipe;
+
 	public Yeast() {
-		
+
 	}
 
-	public Yeast(String yeastName, double yeastWeight, String yeastForm, String yeastLab) {
-		super();
-		this.yeastName = yeastName;
-		this.yeastWeight = yeastWeight;
-		this.yeastForm = yeastForm;
-		this.yeastLab = yeastLab;
-	}
-
-	public int getYeastId() {
-		return yeastId;
-	}
-
-	public void setYeastId(int yeastId) {
-		this.yeastId = yeastId;
+	public int getId() {
+		return id;
 	}
 
 	public String getYeastName() {
@@ -35,7 +39,7 @@ public class Yeast {
 	public void setYeastName(String yeastName) {
 		this.yeastName = yeastName;
 	}
-	
+
 	public double getYeastWeight() {
 		return yeastWeight;
 	}
@@ -59,6 +63,14 @@ public class Yeast {
 	public void setYeastLab(String yeastLab) {
 		this.yeastLab = yeastLab;
 	}
-	
 
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+
+	
 }

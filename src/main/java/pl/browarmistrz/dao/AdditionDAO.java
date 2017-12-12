@@ -9,26 +9,26 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import pl.browarmistrz.entities.Malt;
+import pl.browarmistrz.entities.Addition;
 
 @Repository
 @Transactional
-public class MaltDAO {
+public class AdditionDAO {
 
 	@PersistenceContext
 	EntityManager entityManager;
 	
-	public void saveMalt(Malt entity) {
+	public void saveAddition(Addition entity) {
 		entityManager.persist(entity);
 	}
 	
-	public List<Malt> getMalts() {
-		Query query = entityManager.createQuery("SELECT b FROM Malt b");
-		List<Malt> malts = query.getResultList();
-		return malts;
+	public List<Addition> getAdditions() {
+		Query query = entityManager.createQuery("SELECT d FROM Addition d");
+		List<Addition> additions = query.getResultList();
+		return additions;
 	}
 	
-	public Malt findById(int id) {
-		return entityManager.find(Malt.class, id);
+	public Addition findById(int id) {
+		return entityManager.find(Addition.class, id);
 	}
 }
