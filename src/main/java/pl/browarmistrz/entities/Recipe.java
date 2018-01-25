@@ -1,19 +1,26 @@
 package pl.browarmistrz.entities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 
 @Entity
 @Table(name = "recipes")
@@ -22,30 +29,53 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@ManyToOne
+	@NotNull
+	private User user;
+	
+	private Calendar added;
 
-	@Column(nullable = false)
+	@NotBlank
 	private String brewName;
 
+	@Digits(integer=3, fraction=0)
+	@Min(value=1)
+	@NotNull
+	private Integer mashTime;
+	@Digits(integer=3, fraction=0)
+	@Min(value=1)
+	@NotNull
+	private Integer mashTemp;
+	@Digits(integer=3, fraction=0)
+	@Min(value=1)
+	@NotNull
+	private Integer boilTime;
+	@Digits(integer=3, fraction=2)
+	@Min(value=1)
+	@NotNull
+	private Double brewSize;
+	@OneToOne
+	private BeerStyle beerStyle;
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "recipe_id")
+	@Valid
 	private List<Malt> malts = new ArrayList<Malt>();
-
-	private int mashTime;
-	private int mashTemp;
-	private int boilTime;
-
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "recipe_id")
+	@Valid
 	private List<Hop> hops = new ArrayList<Hop>();
 
-	// NIE DZIALA FOREIGN KEY DLA DROZDZY
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recipe")
-	@JoinColumn(name = "recipe_id")
+	@OneToOne(cascade = CascadeType.ALL)
+	@Valid
 	private Yeast yeast;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "recipe_id")
 	private List<Addition> additions = new ArrayList<Addition>();
+	
+	private boolean publicRecipe;
 	
 	public Recipe() {
 
@@ -75,27 +105,27 @@ public class Recipe {
 		this.malts = malts;
 	}
 
-	public int getMashTime() {
+	public Integer getMashTime() {
 		return mashTime;
 	}
 
-	public void setMashTime(int mashTime) {
+	public void setMashTime(Integer mashTime) {
 		this.mashTime = mashTime;
 	}
 
-	public int getMashTemp() {
+	public Integer getMashTemp() {
 		return mashTemp;
 	}
 
-	public void setMashTemp(int mashTemp) {
+	public void setMashTemp(Integer mashTemp) {
 		this.mashTemp = mashTemp;
 	}
 
-	public int getBoilTime() {
+	public Integer getBoilTime() {
 		return boilTime;
 	}
 
-	public void setBoilTime(int boilTime) {
+	public void setBoilTime(Integer boilTime) {
 		this.boilTime = boilTime;
 	}
 
@@ -121,6 +151,38 @@ public class Recipe {
 
 	public void setAdditions(List<Addition> additions) {
 		this.additions = additions;
+	}
+
+	public boolean isPublicRecipe() {
+		return publicRecipe;
+	}
+
+	public void setPublicRecipe(boolean publicRecipe) {
+		this.publicRecipe = publicRecipe;
+	}
+
+	public Double getBrewSize() {
+		return brewSize;
+	}
+
+	public void setBrewSize(Double brewSize) {
+		this.brewSize = brewSize;
+	}
+
+	public BeerStyle getBeerStyle() {
+		return beerStyle;
+	}
+
+	public void setBeerStyle(BeerStyle beerStyle) {
+		this.beerStyle = beerStyle;
+	}
+
+	public Calendar getAdded() {
+		return added;
+	}
+
+	public void setAdded(Calendar added) {
+		this.added = added;
 	}
 
 }

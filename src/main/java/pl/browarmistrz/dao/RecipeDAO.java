@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import pl.browarmistrz.entities.Recipe;
+import pl.browarmistrz.entities.Yeast;
 
 @Component
 @Transactional
@@ -31,4 +32,5 @@ public class RecipeDAO {
 	public Recipe findById(int id) {
 		return entityManager.find(Recipe.class, id);
 	}
+	
 }

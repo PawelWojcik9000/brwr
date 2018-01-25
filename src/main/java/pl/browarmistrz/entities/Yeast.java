@@ -1,12 +1,15 @@
 package pl.browarmistrz.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "yeasts")
@@ -15,13 +18,15 @@ public class Yeast {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@NotBlank
 	private String yeastName;
 	private String yeastForm;
 	private String yeastLab;
-	private double yeastWeight;
+	@Digits(integer=3, fraction=2)
+	@Min(value=1)
+	private Double yeastWeight;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	//@JoinColumn(name = "recipe_id")
+	@OneToOne(mappedBy="yeast")
 	private Recipe recipe;
 
 	public Yeast() {
@@ -40,11 +45,11 @@ public class Yeast {
 		this.yeastName = yeastName;
 	}
 
-	public double getYeastWeight() {
+	public Double getYeastWeight() {
 		return yeastWeight;
 	}
 
-	public void setYeastWeight(double yeastWeight) {
+	public void setYeastWeight(Double yeastWeight) {
 		this.yeastWeight = yeastWeight;
 	}
 

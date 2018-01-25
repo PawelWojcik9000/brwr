@@ -1,39 +1,52 @@
 package pl.browarmistrz.controllers;
 
+import java.util.Calendar;
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import pl.browarmistrz.dao.AdditionDAO;
-import pl.browarmistrz.dao.HopDAO;
-import pl.browarmistrz.dao.MaltDAO;
-import pl.browarmistrz.dao.RecipeDAO;
-import pl.browarmistrz.dao.YeastDAO;
-import pl.browarmistrz.entities.Malt;
+import pl.browarmistrz.entities.BeerStyle;
 import pl.browarmistrz.entities.Recipe;
+import pl.browarmistrz.repositories.AdditionRepository;
+import pl.browarmistrz.repositories.BeerStyleRepository;
+import pl.browarmistrz.repositories.HopRepository;
+import pl.browarmistrz.repositories.MaltRepository;
+import pl.browarmistrz.repositories.RecipeRepository;
+import pl.browarmistrz.repositories.YeastRepository;
 
 @Controller
 @RequestMapping("/recipe")
 public class RecipeController {
-
-	private RecipeDAO recipeDAO;
-	private MaltDAO maltDAO;
-	private HopDAO hopDAO;
-	private YeastDAO yeastDAO;
-	private AdditionDAO additionDAO;
+	
+	private final MaltRepository maltRepository;
+	private final AdditionRepository additionRepository;
+	private final HopRepository hopRepository;
+	private final RecipeRepository recipeRepository;
+	private final YeastRepository yeastRepository;
+	private final BeerStyleRepository beerStyleRepository;
 	
 	@Autowired
-	public RecipeController(RecipeDAO recipeDAO, MaltDAO maltDAO, HopDAO hopDAO, YeastDAO yeastDAO, AdditionDAO additionDAO) {
-		this.recipeDAO = recipeDAO;
-		this.maltDAO = maltDAO;
-		this.hopDAO = hopDAO;
-		this.yeastDAO = yeastDAO;
-		this.additionDAO = additionDAO;
+	public RecipeController(MaltRepository maltRepository, AdditionRepository additionRepository, 
+							HopRepository hopRepository, RecipeRepository recipeRepository, 
+							YeastRepository yeastRepository, BeerStyleRepository beerStyleRepository) {
+		this.maltRepository = maltRepository;
+		this.additionRepository = additionRepository;
+		this.hopRepository = hopRepository;
+		this.recipeRepository = recipeRepository;
+		this.yeastRepository = yeastRepository;
+		this.beerStyleRepository = beerStyleRepository;
 	}
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
@@ -43,15 +56,41 @@ public class RecipeController {
 	}
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.POST)
-	public String processForm(@ModelAttribute Recipe recipe) {
-		System.out.println(recipe.getBrewName());
-		recipeDAO.saveRecipe(recipe);
-		return "addedrecipe";
+	public String processForm(@Valid Recipe recipe, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return "addrecipe";
+		} else {
+			recipe.setAdded(Calendar.getInstance());
+			recipeRepository.save(recipe);
+			return "addedrecipe";
+		}
 	}
-
-	@ModelAttribute("allmalts")
-	public Collection<Malt> malts() {
-		return this.maltDAO.getMalts();
+	
+	@GetMapping("/publicrecipes")
+	public String showPublicRecipes(Model model) {
+		model.addAttribute("publicrecipes", recipeRepository.findPublicRecipes());
+		return "publicrecipes";
+	}
+	
+	@Transactional
+	@GetMapping("/showrecipe/{id}")
+	public String showRecipe(@PathVariable int id, Model model) {
+		Recipe recipe = recipeRepository.findOne(id);
+		Hibernate.initialize(recipe.getMalts());
+		Hibernate.initialize(recipe.getAdditions());
+		Hibernate.initialize(recipe.getHops());
+		if(recipe.isPublicRecipe()) {
+			model.addAttribute("recipe", recipe);
+			return "showrecipe";
+		} else {
+			return "redirect:/recipe/publicrecipes";
+		}
+		
+	}
+	
+	@ModelAttribute("beerstyles")
+	public Collection<BeerStyle> beerStyles() {
+		return this.beerStyleRepository.findAll();
 	}
 
 }

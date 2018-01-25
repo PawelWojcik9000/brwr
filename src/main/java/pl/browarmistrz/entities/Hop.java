@@ -6,6 +6,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "hops")
@@ -15,20 +18,18 @@ public class Hop {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String hopName;
-	private String hopWeight;
-	private String alphaAcids;
-	private String hopYear;
-	private String hopBoilTime;
+	@Digits(integer=3, fraction=0)
+	@Min(value=1)
+	private Integer hopWeight;
+	@Digits(integer=3, fraction=0)
+	@Min(value=1)
+	private Integer hopBoilTime;
 
 	@ManyToOne
 	private Recipe recipe;
 
 	public Hop() {
 
-	}
-	
-	public int getId() {
-		return id;
 	}
 
 	public String getHopName() {
@@ -39,35 +40,19 @@ public class Hop {
 		this.hopName = hopName;
 	}
 
-	public String getHopWeight() {
+	public Integer getHopWeight() {
 		return hopWeight;
 	}
 
-	public void setHopWeight(String hopWeight) {
+	public void setHopWeight(Integer hopWeight) {
 		this.hopWeight = hopWeight;
 	}
 
-	public String getAlphaAcids() {
-		return alphaAcids;
-	}
-
-	public void setAlphaAcids(String alphaAcids) {
-		this.alphaAcids = alphaAcids;
-	}
-
-	public String getHopYear() {
-		return hopYear;
-	}
-
-	public void setHopYear(String hopYear) {
-		this.hopYear = hopYear;
-	}
-
-	public String getHopBoilTime() {
+	public Integer getHopBoilTime() {
 		return hopBoilTime;
 	}
 
-	public void setHopBoilTime(String hopBoilTime) {
+	public void setHopBoilTime(Integer hopBoilTime) {
 		this.hopBoilTime = hopBoilTime;
 	}
 
@@ -78,6 +63,9 @@ public class Hop {
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
 	
 }
