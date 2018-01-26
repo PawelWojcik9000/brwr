@@ -24,6 +24,7 @@ import pl.browarmistrz.repositories.BeerStyleRepository;
 import pl.browarmistrz.repositories.HopRepository;
 import pl.browarmistrz.repositories.MaltRepository;
 import pl.browarmistrz.repositories.RecipeRepository;
+import pl.browarmistrz.repositories.UserRepository;
 import pl.browarmistrz.repositories.YeastRepository;
 
 @Controller
@@ -36,21 +37,24 @@ public class RecipeController {
 	private final RecipeRepository recipeRepository;
 	private final YeastRepository yeastRepository;
 	private final BeerStyleRepository beerStyleRepository;
+	private final UserRepository userRepository;
 	
 	@Autowired
 	public RecipeController(MaltRepository maltRepository, AdditionRepository additionRepository, 
 							HopRepository hopRepository, RecipeRepository recipeRepository, 
-							YeastRepository yeastRepository, BeerStyleRepository beerStyleRepository) {
+							YeastRepository yeastRepository, BeerStyleRepository beerStyleRepository, 
+							UserRepository userRepository) {
 		this.maltRepository = maltRepository;
 		this.additionRepository = additionRepository;
 		this.hopRepository = hopRepository;
 		this.recipeRepository = recipeRepository;
 		this.yeastRepository = yeastRepository;
 		this.beerStyleRepository = beerStyleRepository;
+		this.userRepository = userRepository;
 	}
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
-	public String showRegistrationForm(Model model) {
+	public String showAddRecipeForm(Model model) {
 		model.addAttribute("recipe", new Recipe());
 		return "addrecipe";
 	}
@@ -61,8 +65,9 @@ public class RecipeController {
 			return "addrecipe";
 		} else {
 			recipe.setAdded(Calendar.getInstance());
+			//recipe.setUser(userRepository.findOne(1));
 			recipeRepository.save(recipe);
-			return "addedrecipe";
+			return "redirect:/recipe/publicrecipes";
 		}
 	}
 	
@@ -85,7 +90,22 @@ public class RecipeController {
 		} else {
 			return "redirect:/recipe/publicrecipes";
 		}
-		
+	}
+	
+	@Transactional
+	@GetMapping("/brewrecipe/{id}")
+	public String brewRecipe(@PathVariable int id, Model model) {
+		Recipe recipe = recipeRepository.findOne(id);
+		Hibernate.initialize(recipe.getMalts());
+		Hibernate.initialize(recipe.getAdditions());
+		Hibernate.initialize(recipe.getHops());
+		if(recipe.isPublicRecipe()) {
+			model.addAttribute("recipe", recipe);
+			model.addAttribute("waterAmount", recipe.countWaterAmount());
+			return "brewrecipe";
+		} else {
+			return "redirect:/home";
+		}
 	}
 	
 	@ModelAttribute("beerstyles")

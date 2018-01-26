@@ -31,7 +31,7 @@ public class Recipe {
 	private int id;
 	
 	@ManyToOne
-	@NotNull
+	//@NotNull
 	private User user;
 	
 	private Calendar added;
@@ -79,6 +79,14 @@ public class Recipe {
 	
 	public Recipe() {
 
+	}
+	
+	public double countWaterAmount() {
+		double waterAmount = 0;
+		for(Malt malt : malts) {
+			waterAmount += malt.getMaltWeight();
+		}
+		return waterAmount*3;
 	}
 	
 	public int getId() {
@@ -183,6 +191,14 @@ public class Recipe {
 
 	public void setAdded(Calendar added) {
 		this.added = added;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

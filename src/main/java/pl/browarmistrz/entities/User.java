@@ -9,21 +9,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
+@Table(name="users")
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@NotBlank
 	private String userName;
 	@Email
+	@NotBlank
 	private String email;
 	@Size(min=5)
 	private String password;
+	@Transient
 	private boolean logged;
 	
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)

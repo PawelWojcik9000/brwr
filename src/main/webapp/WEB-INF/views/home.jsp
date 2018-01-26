@@ -7,6 +7,8 @@
 <title>Browarmistrz Homepage</title>
 </head>
 <body>
+    <a href="user/adduser">zaloz konto</a>
     <a href="recipe/addrecipe">dodaj warke</a>
+    <a href="recipe/publicrecipes">przepisy publiczne</a>
 </body>
 </html>

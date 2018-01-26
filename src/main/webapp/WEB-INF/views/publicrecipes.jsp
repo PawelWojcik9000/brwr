@@ -56,8 +56,7 @@
 					<td><fmt:formatDate value="${recipe.added.time}" type="date" dateStyle="short" /></td>
 				</tr>
 				<tr>
-					<td><a
-						href="<c:url   value="/recipe/showrecipe/${recipe.id}"/>">Pokaż przepis</a></td>
+					<td><a href="<c:url   value="/recipe/showrecipe/${recipe.id}"/>">Pokaż przepis</a></td>
 				</tr>
 			</table>
 		</div>

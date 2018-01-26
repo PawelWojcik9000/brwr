@@ -13,9 +13,38 @@
     	border-collapse: collapse;
     	padding: 5px 15px 5px 15px;
 	}
+	
+	.upbar {
+		width: 100%;
+		height: 50px;
+		background-color: #00053a;
+		color: white;
+		align-items: center;
+		display: flex;
+	}
+	
+	.upbar > p {
+		padding-left: 100px;
+	}
+	
+	.button {
+    	background-color: #00053a;
+    	border: none;
+	    color: white;
+	    padding: 10px 25px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    float: right;
+	}
 </style>
 </head>
 <body>
+
+	<div class="upbar">
+		<p>browarmistrz 1.0</p>
+	</div>
 
 	<div class="recipedetailview">
 		<table>
@@ -105,6 +134,10 @@
 			<tr>
 				<th>Dodano: </th>
 				<td colspan="3"><fmt:formatDate value="${recipe.added.time}" type="date" dateStyle="short" /></td>
+			</tr>
+			
+			<tr>
+				<td colspan="4"><a href="<c:url   value="/recipe/brewrecipe/${recipe.id}"/>"><div class="button">Uwarz to piwo</div></a></td>
 			</tr>
 		</table>
 	</div>
