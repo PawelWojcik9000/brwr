@@ -2,12 +2,15 @@ package pl.browarmistrz.controllers;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import pl.browarmistrz.entities.BeerStyle;
 import pl.browarmistrz.entities.Recipe;
+import pl.browarmistrz.entities.User;
 import pl.browarmistrz.repositories.AdditionRepository;
 import pl.browarmistrz.repositories.BeerStyleRepository;
 import pl.browarmistrz.repositories.HopRepository;
@@ -58,14 +62,14 @@ public class RecipeController {
 		model.addAttribute("recipe", new Recipe());
 		return "addrecipe";
 	}
-
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.POST)
 	public String processForm(@Valid Recipe recipe, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
 			return "addrecipe";
 		} else {
 			recipe.setAdded(Calendar.getInstance());
-			//recipe.setUser(userRepository.findOne(1));
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			recipe.setUser(userRepository.findByUserName(auth.getName()));
 			recipeRepository.save(recipe);
 			return "redirect:/recipe/publicrecipes";
 		}
@@ -75,6 +79,15 @@ public class RecipeController {
 	public String showPublicRecipes(Model model) {
 		model.addAttribute("publicrecipes", recipeRepository.findPublicRecipes());
 		return "publicrecipes";
+	}
+	
+	@Transactional
+	@GetMapping("/userrecipes")
+	public String showUserRecipes(Model model) {
+		User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		Hibernate.initialize(user.getRecipes());
+		model.addAttribute("userrecipes", user.getRecipes());
+		return "userrecipes";
 	}
 	
 	@Transactional
