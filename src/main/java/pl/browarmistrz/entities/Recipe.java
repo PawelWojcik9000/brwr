@@ -31,7 +31,6 @@ public class Recipe {
 	private int id;
 	
 	@ManyToOne
-	//@NotNull
 	private User user;
 	
 	private Calendar added;

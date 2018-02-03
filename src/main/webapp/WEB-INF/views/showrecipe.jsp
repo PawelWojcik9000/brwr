@@ -66,16 +66,18 @@
 				</tr>
 			</c:forEach>
 			
-			<tr>
-				<th colspan="4">Chmiele: </th>
-			</tr>
-			<c:forEach items="${recipe.hops}" var="recipehop">
+			<c:if test="${not empty recipe.hops[0].hopName}">
 				<tr>
-					<td>${recipehop.hopName}</td>
-					<td>${recipehop.hopWeight}g</td>
-					<td colspan="2">${recipehop.hopBoilTime}min</td>
+					<th colspan="4">Chmiele: </th>
 				</tr>
-			</c:forEach>
+				<c:forEach items="${recipe.hops}" var="recipehop">
+					<tr>
+						<td>${recipehop.hopName}</td>
+						<td>${recipehop.hopWeight}g</td>
+						<td colspan="2">${recipehop.hopBoilTime}min</td>
+					</tr>
+				</c:forEach>
+			</c:if>
 				
 			<c:if test="${not empty recipe.additions[0].additionName}">
 				<tr>
