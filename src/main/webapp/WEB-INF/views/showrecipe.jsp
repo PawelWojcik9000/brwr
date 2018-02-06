@@ -139,7 +139,7 @@
 			</tr>
 			
 			<tr>
-				<td colspan="4"><a href="<c:url   value="/recipe/brewrecipe/${recipe.id}"/>"><div class="button">Uwarz to piwo</div></a></td>
+				<td colspan="4"><a href="<c:url		value="/recipe/brewrecipe/${recipe.id}"/>"><div class="button">Uwarz to piwo</div></a></td>
 			</tr>
 		</table>
 	</div>

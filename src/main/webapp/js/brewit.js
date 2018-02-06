@@ -11,44 +11,52 @@ document.addEventListener("DOMContentLoaded", function() {
     var row = 0;
     for(var i = 0; i < okBtns.length; i++) {
         okBtns[i].addEventListener("click", function() {
-            row++; 
-            var buttonArea = tableRow[row].lastElementChild.lastElementChild;
+            
+            if(this.getAttribute("id") === "finishbrewing") {
+                document.getElementsByTagName("body")[0].lastElementChild.style.display = "block";
+                var buttonArea = this;
+            } else {
+                row++; 
+                var buttonArea = tableRow[row].lastElementChild.lastElementChild;
+            }
+            
             if(buttonArea.getAttribute("id") === "countdown") {
-                countDown(buttonArea);
+                countDown(buttonArea, "Gotowe");
             }
 
             var hopsAddTime = document.getElementsByClassName("hopAddTime");
             var additionsAddTime = document.getElementsByClassName("additionAddTime");
-            if(i === 6) {
-                for (let i = 0; i < hopsAddTime.length; i++) {
-                    countDown(hopsAddTime[i]);
+            if(row === 6) {
+                for (var i = 0; i < hopsAddTime.length; i++) {
+                    countDown(hopsAddTime[i], "Chmiel dodany");
                 }
-                for (let i = 0; i < additionsAddTime.length; i++) {
-                    countDown(additionsAddTime[i]);
+                for (var i = 0; i < additionsAddTime.length; i++) {
+                    countDown(additionsAddTime[i], "Dodano");
                 }
             }
-            
+
             tableRow[row].style.visibility = "visible";
-            tableRow[row-1].lastElementChild.lastElementChild.setAttribute("disabled", true);
+            this.setAttribute("disabled", true);
+  
         })
     }
 
-    function countDown(button) {
+    function countDown(counterArea, afterCountText) {
 
-        button.setAttribute("disabled", true);
-        var minutes = button.innerHTML - 1;
+        counterArea.setAttribute("disabled", true);
+        var minutes = counterArea.innerHTML - 1;
         var seconds = 59;
-        button.innerHTML = minutes + 1 + ":00";
+        counterArea.innerHTML = minutes + 1 + ":00";
     	var interval = setInterval(function() {
             
             if(seconds < 10 && minutes < 10) {
-                button.innerHTML = "0" + minutes + ":0" +seconds;
+                counterArea.innerHTML = "0" + minutes + ":0" +seconds;
             } else if(seconds < 10) {
-                button.innerHTML = minutes + ":0" +seconds;
+                counterArea.innerHTML = minutes + ":0" +seconds;
             } else if(minutes < 10) {
-                button.innerHTML = "0" + minutes + ":" +seconds;
+                counterArea.innerHTML = "0" + minutes + ":" +seconds;
             } else {
-                button.innerHTML = minutes + ":" +seconds;
+                counterArea.innerHTML = minutes + ":" +seconds;
             }
 
             if(seconds <= 0) {
@@ -58,12 +66,12 @@ document.addEventListener("DOMContentLoaded", function() {
             seconds--;
 
             if(minutes <= 0 && seconds <= 0) {
-                button.removeAttribute("disabled");
-                button.innerHTML = "OK";
+                counterArea.removeAttribute("disabled");
+                counterArea.innerHTML = afterCountText;
                 clearInterval(interval);
             }
 
-        }, 20);
+        }, 10);
     }
 
 });

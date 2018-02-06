@@ -81,7 +81,7 @@
 							<c:otherwise>
 								<ul class="hop">
 									<li>
-										${hop.hopWeight}g chmielu ${hop.hopName} <span class="hopAddTime">dodaj za: ${recipe.boilTime - hop.hopBoilTime}</span>
+										${hop.hopWeight}g chmielu ${hop.hopName} dodaj za: <span class="hopAddTime">${recipe.boilTime - hop.hopBoilTime}</span>
 									</li>
 								</ul>
 							</c:otherwise>
@@ -118,7 +118,7 @@
 		
 		<tr class="step">
 			<th>8. </th>
-			<td>Schłódź brzeczkę do temperatury zadania drożdży i przelej do fermentora<br> pozostawiając osad drożdżowy na dnie. </td>
+			<td>Schłódź brzeczkę do temperatury zadania drożdży i przelej do fermentora<br> pozostawiając osad chmielowy na dnie. </td>
 			<td><button class="okbtn">OK</button></td>
 		</tr>
 		
@@ -130,10 +130,13 @@
 
 		<tr class="step">
 				<th>10. </th>
-				<td>Koniec. Przepis dodano do zakończonych warek. </td>
+				<td>Zakończono proces warzenia piwa. </td>
+				<td><button class="okbtn" id="finishbrewing">OK</button></td>
 		</tr>
 		
 	</table>
+
+	<a style="display: none;" href="<c:url		value="/recipe/publicrecipes "/>"><div class="button">Dodaj do zakończonych warek</div></a>
 	
 </body>
 </html>
