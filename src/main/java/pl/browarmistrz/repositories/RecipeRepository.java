@@ -11,5 +11,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer>{
 	
 	@Query("SELECT r FROM Recipe r WHERE r.publicRecipe = true")
 	List<Recipe> findPublicRecipes();
+	
+	@Query("SELECT r FROM Recipe r WHERE r.brewedRecipe = true")
+	List<Recipe> findBrewedRecipes();
 
 }

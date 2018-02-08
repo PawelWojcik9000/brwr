@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -59,6 +60,8 @@ public class RecipeController {
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
 	public String showAddRecipeForm(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
 		model.addAttribute("recipe", new Recipe());
 		return "addrecipe";
 	}
@@ -77,6 +80,8 @@ public class RecipeController {
 	
 	@GetMapping("/publicrecipes")
 	public String showPublicRecipes(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
 		model.addAttribute("publicrecipes", recipeRepository.findPublicRecipes());
 		return "publicrecipes";
 	}
@@ -86,6 +91,8 @@ public class RecipeController {
 	public String showUserRecipes(Model model) {
 		User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		Hibernate.initialize(user.getRecipes());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
 		model.addAttribute("userrecipes", user.getRecipes());
 		return "userrecipes";
 	}
@@ -93,6 +100,8 @@ public class RecipeController {
 	@Transactional
 	@GetMapping("/showrecipe/{id}")
 	public String showRecipe(@PathVariable int id, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
 		Recipe recipe = recipeRepository.findOne(id);
 		Hibernate.initialize(recipe.getMalts());
 		Hibernate.initialize(recipe.getAdditions());
@@ -108,6 +117,8 @@ public class RecipeController {
 	@Transactional
 	@GetMapping("/brewrecipe/{id}")
 	public String brewRecipe(@PathVariable int id, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
 		Recipe recipe = recipeRepository.findOne(id);
 		Hibernate.initialize(recipe.getMalts());
 		Hibernate.initialize(recipe.getAdditions());
@@ -119,6 +130,23 @@ public class RecipeController {
 		} else {
 			return "redirect:/home";
 		}
+	}
+	
+	@GetMapping("/brewedrecipe/{id}")
+	public String addToBrewed(@PathVariable int id) {
+		Recipe recipe = recipeRepository.findOne(id);
+		recipe.setBrewedRecipe(true);
+		recipe.setBrewed(Calendar.getInstance());
+		recipeRepository.save(recipe);
+		return "redirect:/recipe/brewedrecipes";
+	}
+	
+	@GetMapping("/brewedrecipes")
+	public String showBrewedRecipes(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
+		model.addAttribute("brewedrecipes", recipeRepository.findBrewedRecipes());
+		return "brewedrecipes";
 	}
 	
 	@ModelAttribute("beerstyles")

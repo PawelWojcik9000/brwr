@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
-	@RequestMapping({ "/*", "/home" })
+	@RequestMapping(value={ "/*", "/home" }, method = RequestMethod.GET)
 	public String home(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("loggeduser", auth.getName());

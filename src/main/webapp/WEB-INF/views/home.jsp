@@ -5,22 +5,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="css/style.css">
 <title>Browarmistrz Homepage</title>
 </head>
 <body>
+	<section class="vertical-menu">
+		<div class="logo">LĄGO</div>
+		<a href="<c:url value="/#" />" class="active">Home</a>
+		<a href="<c:url value="/recipe/publicrecipes" />">Przepisy publiczne</a>
 	
-	<a href="<c:url value="/user/adduser" />">zaloz konto</a>
-	<a href="<c:url value="/recipe/publicrecipes" />">przepisy publiczne</a>
-
-	<sec:authorize access="isAuthenticated()">
-		<a href="<c:url value="/recipe/addrecipe" />">dodaj warke</a>
-		<a href="<c:url value="/recipe/userrecipes" />">moje przepisy</a>
-		<a href="<c:url value="/logout" />">wyloguj: ${loggeduser}</a>
-	</sec:authorize>
-	
-	<sec:authorize access="!isAuthenticated()">
-		<a href="<c:url value="/login" />">zaloguj</a>
-	</sec:authorize>
-	
+		<sec:authorize access="isAuthenticated()">
+			<a href="<c:url value="/recipe/addrecipe" />">Dodaj warkę</a>
+			<a href="<c:url value="/recipe/userrecipes" />">Moje przepisy</a>
+			<a href="<c:url value="/logout" />">Wyloguj: ${loggeduser}</a>
+		</sec:authorize>
+		
+		<sec:authorize access="!isAuthenticated()">
+			<a href="<c:url value="/user/adduser" />">Załóż konto</a>
+			<a href="<c:url value="/login" />">Zaloguj</a>
+		</sec:authorize>
+	</section>
 </body>
 </html>

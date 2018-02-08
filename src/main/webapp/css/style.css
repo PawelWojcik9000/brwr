@@ -1,0 +1,93 @@
+html, body {
+	padding: 0px;
+	margin: 0px;
+}
+
+section.vertical-menu {
+	width: 300px;
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+	bottom: 0;
+	background-color: #eee;
+	bottom: 0;
+}
+
+section.main {
+	margin-left: 350px;
+}
+
+.logo {
+	width: 300px;
+	height: 100px;
+}
+
+section.vertical-menu a {
+	background-color: #eee; /* Grey background color */
+	color: black; /* Black text color */
+	display: block; /* Make the links appear below each other */
+	padding: 12px; /* Add some padding */
+	text-decoration: none; /* Remove underline from links */
+}
+
+section.vertical-menu a:hover {
+	background-color: #ccc; /* Dark grey background on mouse-over */
+}
+
+section.vertical-menu a.active {
+	background-color: #66a0ff;
+	/* Add a green color to the "active/current" link */
+	color: white;
+}
+
+.public-recipe-table {
+	display: inline-table;
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	width: 35%;
+	margin: 4% 5%;
+}
+
+.public-recipe-table td, .public-recipe-table th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.public-recipe-table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.public-recipe-table tr:hover {
+	background-color: #ddd;
+}
+
+.public-recipe-table th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: center;
+	background-color: #9ec3ff;
+	color: black;
+}
+
+.addrecipe-table {
+		width: 900px;
+		margin: 5px 0px 10px 0px;
+		border: 1px solid black;
+	}
+
+.button {
+	background-color: #66a0ff;
+	border: none;
+	color: white;
+	padding: 7px 14px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	text-decoration: none;
+}
+
+.error {
+	color: red;
+}

@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -34,6 +35,13 @@ public class Recipe {
 	private User user;
 	
 	private Calendar added;
+	private Calendar brewed;
+	
+	private boolean publicRecipe;
+	private boolean brewedRecipe = false;
+	
+	@Size(max=500)
+	private String notes;
 
 	@NotBlank
 	private String brewName;
@@ -73,8 +81,6 @@ public class Recipe {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "recipe_id")
 	private List<Addition> additions = new ArrayList<Addition>();
-	
-	private boolean publicRecipe;
 	
 	public Recipe() {
 
@@ -164,6 +170,14 @@ public class Recipe {
 		return publicRecipe;
 	}
 
+	public boolean isBrewedRecipe() {
+		return brewedRecipe;
+	}
+
+	public void setBrewedRecipe(boolean brewedRecipe) {
+		this.brewedRecipe = brewedRecipe;
+	}
+
 	public void setPublicRecipe(boolean publicRecipe) {
 		this.publicRecipe = publicRecipe;
 	}
@@ -192,12 +206,28 @@ public class Recipe {
 		this.added = added;
 	}
 
+	public Calendar getBrewed() {
+		return brewed;
+	}
+
+	public void setBrewed(Calendar brewed) {
+		this.brewed = brewed;
+	}
+
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 }
