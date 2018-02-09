@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var tableRow = document.getElementsByTagName("tr");
     var okBtns = document.getElementsByClassName("okbtn");
+    var addToBrewedBtn = document.getElementById("finished-brewing");
+    addToBrewedBtn.setAttribute("hidden", true);
 
     for (var i = 1; i < tableRow.length; i++) {
         tableRow[i].style.visibility = "hidden";
@@ -15,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if(this.getAttribute("id") === "finishbrewing") {
                 document.getElementsByTagName("body")[0].lastElementChild.style.display = "block";
                 var buttonArea = this;
+                addToBrewedBtn.removeAttribute("hidden");
             } else {
                 row++; 
                 var buttonArea = tableRow[row].lastElementChild.lastElementChild;

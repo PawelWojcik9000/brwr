@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css" />">
 <title>Browarmistrz Homepage</title>
 </head>
 <body>
@@ -17,6 +17,8 @@
 		<sec:authorize access="isAuthenticated()">
 			<a href="<c:url value="/recipe/addrecipe" />">Dodaj warkę</a>
 			<a href="<c:url value="/recipe/userrecipes" />">Moje przepisy</a>
+			<a href="<c:url value="/recipe/brewedrecipes" />">Uwarzone piwa</a>
+			<a href="<c:url value="/user/edituser" />">Ustawienia konta</a>
 			<a href="<c:url value="/logout" />">Wyloguj: ${loggeduser}</a>
 		</sec:authorize>
 		

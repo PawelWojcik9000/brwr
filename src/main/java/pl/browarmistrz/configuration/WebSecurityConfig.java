@@ -37,8 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/userpage/**").access("hasRole('ROLE_USER')")
 			.antMatchers("/recipe/addrecipe").access("hasRole('ROLE_USER')")
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-			//.antMatchers("/db/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_DBA')")
-			.and().formLogin().and().exceptionHandling().accessDeniedPage("/Access_Denied");
+			.and().formLogin()
+			//.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll()
+			.and().exceptionHandling().accessDeniedPage("/Access_Denied");
 
 	}
 

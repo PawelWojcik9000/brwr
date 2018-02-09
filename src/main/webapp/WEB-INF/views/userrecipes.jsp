@@ -21,6 +21,7 @@
 		<sec:authorize access="isAuthenticated()">
 			<a href="<c:url value="/recipe/addrecipe" />">Dodaj warkę</a>
 			<a href="<c:url value="/recipe/userrecipes" />" class="active">Moje przepisy</a>
+			<a href="<c:url value="/recipe/brewedrecipes" />">Uwarzone piwa</a>
 			<a href="<c:url value="/logout" />">Wyloguj: ${loggeduser}</a>
 		</sec:authorize>
 		
@@ -32,32 +33,30 @@
 	
 	<section class="main">
 		<c:forEach items="${userrecipes}" var="recipe">
-			<div class="public-recipe-table">
-				<table>
-					<tr>
-						<th colspan="2">${recipe.brewName}</th>
-					</tr>
-					<tr>
-						<td>Styl:</td>
-						<td>${recipe.beerStyle.styleName}</td>
-					</tr>
-					<tr>
-						<td>Rozmiar:</td>
-						<td>${recipe.brewSize}L</td>
-					</tr>
-					<tr>
-						<td>ABV:</td>
-						<td>${recipe.beerStyle.ABV}</td>
-					</tr>
-					<tr>
-						<td>Dodano:</td>
-						<td><fmt:formatDate value="${recipe.added.time}" type="date" dateStyle="short" /></td>
-					</tr>
-					<tr>
-						<td colspan="2"><a class="button" href="<c:url   value="/recipe/showrecipe/${recipe.id}"/>">Pokaż przepis</a></td>
-					</tr>
-				</table>
-			</div>
+			<table class="public-recipe-table">
+				<tr>
+					<th colspan="2">${recipe.brewName}</th>
+				</tr>
+				<tr>
+					<td>Styl:</td>
+					<td>${recipe.beerStyle.styleName}</td>
+				</tr>
+				<tr>
+					<td>Rozmiar:</td>
+					<td>${recipe.brewSize}L</td>
+				</tr>
+				<tr>
+					<td>ABV:</td>
+					<td>${recipe.beerStyle.ABV}</td>
+				</tr>
+				<tr>
+					<td>Dodano:</td>
+					<td><fmt:formatDate value="${recipe.added.time}" type="date" dateStyle="short" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><a class="button" href="<c:url   value="/recipe/showrecipe/${recipe.id}"/>">Pokaż przepis</a></td>
+				</tr>
+			</table>
 		</c:forEach>
 	</section>
 

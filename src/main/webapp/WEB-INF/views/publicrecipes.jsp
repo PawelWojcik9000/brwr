@@ -21,6 +21,7 @@
 		<sec:authorize access="isAuthenticated()">
 			<a href="<c:url value="/recipe/addrecipe" />">Dodaj warkę</a>
 			<a href="<c:url value="/recipe/userrecipes" />">Moje przepisy</a>
+			<a href="<c:url value="/recipe/brewedrecipes" />">Uwarzone piwa</a>
 			<a href="<c:url value="/logout" />">Wyloguj: ${loggeduser}</a>
 		</sec:authorize>
 		

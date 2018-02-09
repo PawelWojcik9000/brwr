@@ -22,6 +22,7 @@
 		<sec:authorize access="isAuthenticated()">
 			<a href="<c:url value="/recipe/addrecipe" />">Dodaj warkę</a>
 			<a href="<c:url value="/recipe/userrecipes" />">Moje przepisy</a>
+			<a href="<c:url value="/recipe/brewedrecipes" />">Uwarzone piwa</a>
 			<a href="<c:url value="/logout" />">Wyloguj: ${loggeduser}</a>
 		</sec:authorize>
 		
@@ -32,7 +33,7 @@
 	</section>
 	
 	<section class="main">
-		<div class="public-recipe-table">
+		<div class="show-recipe-table">
 			<table>
 				<tr>
 					<th>1. </th>
@@ -86,7 +87,7 @@
 						<c:if test="${not empty recipe.hops[0].hopName}">
 							<c:forEach var="hop" items="${recipe.hops}">
 								<c:choose>
-									<c:when test="${recipe.boilTime - hop.hopBoilTime <= 0}">
+									<c:when test="${recipe.boilTime - hop.hopBoilTime <= 0 or empty hop.hopBoilTime}">
 										<ul class="hop">
 											<li>
 												${hop.hopWeight}g chmielu ${hop.hopName} dodaj od razu na początku gotowania. 
@@ -151,7 +152,9 @@
 				
 			</table>
 		
-			<a style="display: none;" href="<c:url		value="/recipe/brewedrecipe/${recipe.id} "/>"><div class="button">Dodaj do zakończonych warek</div></a>
+			<div id="finished-brewing">
+				<a href="<c:url		value="/recipe/brewedrecipe/${recipe.id} "/>"><div class="button">Dodaj do zakończonych warek</div></a>
+			</div>
 		</div>	
 	</section>
 </body>

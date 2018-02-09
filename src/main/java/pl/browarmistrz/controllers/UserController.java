@@ -1,12 +1,17 @@
 package pl.browarmistrz.controllers;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -52,5 +57,23 @@ public class UserController {
 		}
 	}
 	
+//	@Transactional
+//	@GetMapping("/edituser")
+//	public String showEditUserForm(Model model) {
+//		model.addAttribute("user", (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//		return "adduser";
+//	}
+//	@PostMapping("/edituser")
+//	public String processEditUserForm(@Valid User user, BindingResult bindingResult) {
+//		if(bindingResult.hasErrors()) {
+//			return "edituser";
+//		} else {
+			//user.setPassword(passwordEncoder.encode(user.getPassword()));
+//			User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			user.setUserId(currentUser.getUserId());
+//			userRepository.save(user);
+//			return "redirect:/home";
+//		}
+//	}
 
 }

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,8 +59,15 @@ public class RecipeController {
 		this.beerStyleRepository = beerStyleRepository;
 		this.userRepository = userRepository;
 	}
+	
+	public void hibInitializeMaltsAdditionsHops(Recipe recipe) {
+		Hibernate.initialize(recipe.getMalts());
+		Hibernate.initialize(recipe.getAdditions());
+		Hibernate.initialize(recipe.getHops());
+	}
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public String showAddRecipeForm(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("loggeduser", auth.getName());
@@ -74,8 +83,43 @@ public class RecipeController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			recipe.setUser(userRepository.findByUserName(auth.getName()));
 			recipeRepository.save(recipe);
-			return "redirect:/recipe/publicrecipes";
+			return "redirect:/recipe/userrecipes";
 		}
+	}
+	
+	@GetMapping("/editrecipe/{id}")
+	@Transactional
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public String editRecipe(Model model, @PathVariable int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
+		Recipe recipe = recipeRepository.getOne(id);
+		hibInitializeMaltsAdditionsHops(recipe);
+		model.addAttribute("recipe", recipe);
+		return "addrecipe";
+	}
+	@PostMapping("/editrecipe/{id}")
+	@Transactional
+	public String processEditRecipe(@Valid Recipe recipe, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return "addrecipe";
+		} else {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			recipe.setUser(userRepository.findByUserName(auth.getName()));
+			recipe.setAdded(recipeRepository.getOne(recipe.getId()).getAdded());
+			recipeRepository.save(recipe);
+			return "redirect:/recipe/userrecipes";
+		}
+	}
+	
+	@GetMapping("/deleterecipe/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@Transactional
+	public String deleteRecipe(@PathVariable int id) {
+		Recipe recipe = recipeRepository.getOne(id);
+		hibInitializeMaltsAdditionsHops(recipe);
+		recipeRepository.delete(recipe);
+		return "redirect:/recipe/userrecipes";
 	}
 	
 	@GetMapping("/publicrecipes")
@@ -88,6 +132,7 @@ public class RecipeController {
 	
 	@Transactional
 	@GetMapping("/userrecipes")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public String showUserRecipes(Model model) {
 		User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		Hibernate.initialize(user.getRecipes());
@@ -101,13 +146,19 @@ public class RecipeController {
 	@GetMapping("/showrecipe/{id}")
 	public String showRecipe(@PathVariable int id, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("loggeduser", auth.getName());
+		String loggedUserName = auth.getName();
+		model.addAttribute("loggeduser", loggedUserName);
 		Recipe recipe = recipeRepository.findOne(id);
-		Hibernate.initialize(recipe.getMalts());
-		Hibernate.initialize(recipe.getAdditions());
-		Hibernate.initialize(recipe.getHops());
+		hibInitializeMaltsAdditionsHops(recipe);
 		if(recipe.isPublicRecipe()) {
 			model.addAttribute("recipe", recipe);
+			return "showrecipe";
+		} else if(!recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
+			model.addAttribute("recipe", recipe);
+			return "showrecipe";
+		} else if(recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) { // POZWALA EDYTOWAC I USUWAC CUDZE PRZEPISY
+			model.addAttribute("recipe", recipe);
+			model.addAttribute("showeditdelete", true);
 			return "showrecipe";
 		} else {
 			return "redirect:/recipe/publicrecipes";
@@ -120,9 +171,7 @@ public class RecipeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("loggeduser", auth.getName());
 		Recipe recipe = recipeRepository.findOne(id);
-		Hibernate.initialize(recipe.getMalts());
-		Hibernate.initialize(recipe.getAdditions());
-		Hibernate.initialize(recipe.getHops());
+		hibInitializeMaltsAdditionsHops(recipe);
 		if(recipe.isPublicRecipe()) {
 			model.addAttribute("recipe", recipe);
 			model.addAttribute("waterAmount", recipe.countWaterAmount());
@@ -133,6 +182,7 @@ public class RecipeController {
 	}
 	
 	@GetMapping("/brewedrecipe/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public String addToBrewed(@PathVariable int id) {
 		Recipe recipe = recipeRepository.findOne(id);
 		recipe.setBrewedRecipe(true);
@@ -142,10 +192,11 @@ public class RecipeController {
 	}
 	
 	@GetMapping("/brewedrecipes")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public String showBrewedRecipes(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("loggeduser", auth.getName());
-		model.addAttribute("brewedrecipes", recipeRepository.findBrewedRecipes());
+		model.addAttribute("brewedrecipes", recipeRepository.findBrewedRecipes()); // ZWRACA UWARZONE PRZEPISY WSZYSTKICH UZYTKOWNIKOW
 		return "brewedrecipes";
 	}
 	

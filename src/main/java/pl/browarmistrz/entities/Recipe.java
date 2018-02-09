@@ -39,9 +39,6 @@ public class Recipe {
 	
 	private boolean publicRecipe;
 	private boolean brewedRecipe = false;
-	
-	@Size(max=500)
-	private String notes;
 
 	@NotBlank
 	private String brewName;
@@ -220,14 +217,6 @@ public class Recipe {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
 	}
 
 }

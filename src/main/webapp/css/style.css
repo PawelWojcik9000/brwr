@@ -49,20 +49,29 @@ section.vertical-menu a.active {
 	margin: 4% 5%;
 }
 
-.public-recipe-table td, .public-recipe-table th {
+.show-recipe-table {
+	display: inline-table;
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	margin: 4% 5%;
+}
+
+.public-recipe-table td, .public-recipe-table th, .show-recipe-table td, .show-recipe-table th {
 	border: 1px solid #ddd;
 	padding: 8px;
 }
 
-.public-recipe-table tr:nth-child(even) {
+.public-recipe-table tr:nth-child(even), .show-recipe-table tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
 
-.public-recipe-table tr:hover {
+.public-recipe-table tr:hover, .show-recipe-table tr:hover {
 	background-color: #ddd;
 }
 
-.public-recipe-table th {
+.public-recipe-table th, .show-recipe-table th {
 	padding-top: 12px;
 	padding-bottom: 12px;
 	text-align: center;
