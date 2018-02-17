@@ -4,6 +4,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -57,23 +59,35 @@ public class UserController {
 		}
 	}
 	
-//	@Transactional
-//	@GetMapping("/edituser")
-//	public String showEditUserForm(Model model) {
-//		model.addAttribute("user", (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//		return "adduser";
-//	}
-//	@PostMapping("/edituser")
-//	public String processEditUserForm(@Valid User user, BindingResult bindingResult) {
-//		if(bindingResult.hasErrors()) {
-//			return "edituser";
-//		} else {
-			//user.setPassword(passwordEncoder.encode(user.getPassword()));
-//			User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//			user.setUserId(currentUser.getUserId());
-//			userRepository.save(user);
-//			return "redirect:/home";
-//		}
-//	}
+	@GetMapping("/users")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String pageForAdminUsers(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
+		model.addAttribute("users", userRepository.findAll());
+		return "users";
+	}
+	
+	@GetMapping("/activatedeactivate/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Transactional
+	public String activateDeactivateUser(@PathVariable Long id) {
+		User user = userRepository.findOne(id);
+		if(user.getEnabled() == 1) {
+			user.setEnabled(0);
+		} else {
+			user.setEnabled(1);
+		}
+		userRepository.save(user);
+		return "redirect:/user/users";
+	}
+	
+	@GetMapping("/deleteuser/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Transactional
+	public String deleteUser(@PathVariable Long id) {
+		userRepository.delete(id);
+		return "redirect:/user/users";
+	}
 
 }

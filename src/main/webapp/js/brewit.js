@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 clearInterval(interval);
             }
 
-        }, 10);
+        }, 50);
     }
 
 });

@@ -34,11 +34,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 			.antMatchers("/home").permitAll()
-			.antMatchers("/userpage/**").access("hasRole('ROLE_USER')")
+			.antMatchers("/adminpage").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/recipe/addrecipe").access("hasRole('ROLE_USER')")
-			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-			.and().formLogin()
-			//.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll()
+			.antMatchers("/user/users").access("hasRole('ROLE_ADMIN')")
+			.antMatchers("/user/recipes").access("hasRole('ROLE_ADMIN')")
+			.and().formLogin().loginPage("/login").loginProcessingUrl("/login")
 			.and().exceptionHandling().accessDeniedPage("/Access_Denied");
 
 	}

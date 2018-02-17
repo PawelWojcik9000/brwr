@@ -2,7 +2,6 @@ package pl.browarmistrz.controllers;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -19,43 +18,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import pl.browarmistrz.entities.BeerStyle;
 import pl.browarmistrz.entities.Recipe;
 import pl.browarmistrz.entities.User;
-import pl.browarmistrz.repositories.AdditionRepository;
 import pl.browarmistrz.repositories.BeerStyleRepository;
-import pl.browarmistrz.repositories.HopRepository;
-import pl.browarmistrz.repositories.MaltRepository;
 import pl.browarmistrz.repositories.RecipeRepository;
 import pl.browarmistrz.repositories.UserRepository;
-import pl.browarmistrz.repositories.YeastRepository;
 
 @Controller
 @RequestMapping("/recipe")
 public class RecipeController {
 	
-	private final MaltRepository maltRepository;
-	private final AdditionRepository additionRepository;
-	private final HopRepository hopRepository;
 	private final RecipeRepository recipeRepository;
-	private final YeastRepository yeastRepository;
 	private final BeerStyleRepository beerStyleRepository;
 	private final UserRepository userRepository;
 	
 	@Autowired
-	public RecipeController(MaltRepository maltRepository, AdditionRepository additionRepository, 
-							HopRepository hopRepository, RecipeRepository recipeRepository, 
-							YeastRepository yeastRepository, BeerStyleRepository beerStyleRepository, 
+	public RecipeController(RecipeRepository recipeRepository, BeerStyleRepository beerStyleRepository, 
 							UserRepository userRepository) {
-		this.maltRepository = maltRepository;
-		this.additionRepository = additionRepository;
-		this.hopRepository = hopRepository;
 		this.recipeRepository = recipeRepository;
-		this.yeastRepository = yeastRepository;
 		this.beerStyleRepository = beerStyleRepository;
 		this.userRepository = userRepository;
 	}
@@ -65,12 +50,16 @@ public class RecipeController {
 		Hibernate.initialize(recipe.getAdditions());
 		Hibernate.initialize(recipe.getHops());
 	}
+	
+	public void setLoggedUserAttribute(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
+	}
 
 	@RequestMapping(value = "/addrecipe", method = RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public String showAddRecipeForm(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("loggeduser", auth.getName());
+		setLoggedUserAttribute(model);
 		model.addAttribute("recipe", new Recipe());
 		return "addrecipe";
 	}
@@ -91,8 +80,7 @@ public class RecipeController {
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public String editRecipe(Model model, @PathVariable int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("loggeduser", auth.getName());
+		setLoggedUserAttribute(model);
 		Recipe recipe = recipeRepository.getOne(id);
 		hibInitializeMaltsAdditionsHops(recipe);
 		model.addAttribute("recipe", recipe);
@@ -124,8 +112,7 @@ public class RecipeController {
 	
 	@GetMapping("/publicrecipes")
 	public String showPublicRecipes(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("loggeduser", auth.getName());
+		setLoggedUserAttribute(model);
 		model.addAttribute("publicrecipes", recipeRepository.findPublicRecipes());
 		return "publicrecipes";
 	}
@@ -150,15 +137,17 @@ public class RecipeController {
 		model.addAttribute("loggeduser", loggedUserName);
 		Recipe recipe = recipeRepository.findOne(id);
 		hibInitializeMaltsAdditionsHops(recipe);
-		if(recipe.isPublicRecipe()) {
+		if(recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
 			model.addAttribute("recipe", recipe);
+			model.addAttribute("showeditdelete", true);
 			return "showrecipe";
 		} else if(!recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
 			model.addAttribute("recipe", recipe);
-			return "showrecipe";
-		} else if(recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) { // POZWALA EDYTOWAC I USUWAC CUDZE PRZEPISY
-			model.addAttribute("recipe", recipe);
 			model.addAttribute("showeditdelete", true);
+			return "showrecipe";
+		} else if(recipe.isPublicRecipe() && !recipe.getUser().getUserName().equals(loggedUserName)) {
+			model.addAttribute("recipe", recipe);
+			model.addAttribute("showeditdelete", false);
 			return "showrecipe";
 		} else {
 			return "redirect:/recipe/publicrecipes";
@@ -168,8 +157,7 @@ public class RecipeController {
 	@Transactional
 	@GetMapping("/brewrecipe/{id}")
 	public String brewRecipe(@PathVariable int id, Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("loggeduser", auth.getName());
+		setLoggedUserAttribute(model);
 		Recipe recipe = recipeRepository.findOne(id);
 		hibInitializeMaltsAdditionsHops(recipe);
 		if(recipe.isPublicRecipe()) {
@@ -185,10 +173,15 @@ public class RecipeController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public String addToBrewed(@PathVariable int id) {
 		Recipe recipe = recipeRepository.findOne(id);
-		recipe.setBrewedRecipe(true);
-		recipe.setBrewed(Calendar.getInstance());
-		recipeRepository.save(recipe);
-		return "redirect:/recipe/brewedrecipes";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(recipe.getUser().getUserName().equals(auth.getName())) {
+			recipe.setBrewedRecipe(true);
+			recipe.setBrewed(Calendar.getInstance());
+			recipeRepository.save(recipe);
+			return "redirect:/recipe/brewedrecipes";
+		} else {
+			return "redirect:/recipe/brewedrecipes";
+		}
 	}
 	
 	@GetMapping("/brewedrecipes")
@@ -196,8 +189,58 @@ public class RecipeController {
 	public String showBrewedRecipes(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("loggeduser", auth.getName());
-		model.addAttribute("brewedrecipes", recipeRepository.findBrewedRecipes()); // ZWRACA UWARZONE PRZEPISY WSZYSTKICH UZYTKOWNIKOW
+		model.addAttribute("brewedrecipes", recipeRepository.findBrewedRecipes(auth.getName())); 
 		return "brewedrecipes";
+	}
+	
+	@GetMapping("/recipes")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String pageForAdminRecipes(Model model) {
+		setLoggedUserAttribute(model);
+		model.addAttribute("recipes", recipeRepository.findAll());
+		return "recipes";
+	}
+	
+	@GetMapping("/admin/deleterecipe/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Transactional
+	public String deleteUser(@PathVariable int id) {
+		recipeRepository.delete(id);
+		return "redirect:/recipe/recipes";
+	}
+
+	@GetMapping("/calculateABV")
+	public String calculateAbv() {
+		return "calculateabv";
+	}
+	@PostMapping("/calculateABV")
+	public String processCalculateAbv(Model model, @RequestParam(name="og") Double og, @RequestParam(name="fg") Double fg) {
+		String alcoholByVolume;
+		String str;
+		Double abv;
+			
+		try {
+			abv = (og-fg)/1.938;
+			str = abv.toString();
+			alcoholByVolume = str.substring(0, 4)+"%";
+		} catch (NumberFormatException e) {
+			alcoholByVolume = "Niepoprawne dane wejściowe";
+			model.addAttribute("abv", alcoholByVolume);
+			return "calculateabv";
+			//e.printStackTrace();
+		} catch (NullPointerException e) {
+			alcoholByVolume = "Brak danych wejściowych";
+			model.addAttribute("abv", alcoholByVolume);
+			return "calculateabv";
+		}
+		
+		if(og <= 0 || fg <= 0) {
+			alcoholByVolume = "Wartości muszą być dodatnie";
+		}
+		
+		model.addAttribute("abv", alcoholByVolume);
+
+		return "calculateabv";
 	}
 	
 	@ModelAttribute("beerstyles")

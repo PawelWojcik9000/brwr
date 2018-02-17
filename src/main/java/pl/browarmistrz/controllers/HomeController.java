@@ -10,9 +10,11 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
@@ -23,11 +25,18 @@ public class HomeController {
 		model.addAttribute("loggeduser", auth.getName());
 		return "home";
 	}
-
-	@RequestMapping(value = "/userpage", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public String pageForUser() {
-		return "userpage";
+	
+	@RequestMapping(value = "/login", method = { RequestMethod.GET})
+    public String loginPage() {
+        return "login";
+    }
+	
+	@GetMapping("/adminpage")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String pageForAdmin(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("loggeduser", auth.getName());
+		return "adminpage";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -38,4 +47,5 @@ public class HomeController {
 		}
 		return "redirect:/home";
 	}
+
 }
