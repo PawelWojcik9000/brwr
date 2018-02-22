@@ -1,7 +1,6 @@
 pl/browarmistrz/configuration/SecurityWebApplicationInitializer.class
 pl/browarmistrz/AppInitializer.class
 pl/browarmistrz/entities/Hop.class
-pl/browarmistrz/entities/CalculatorABV.class
 pl/browarmistrz/repositories/BeerStyleRepository.class
 pl/browarmistrz/repositories/UserRolesRepository.class
 pl/browarmistrz/repositories/MaltRepository.class

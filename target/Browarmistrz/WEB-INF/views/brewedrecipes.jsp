@@ -14,7 +14,7 @@
 <body>
 
 	<section class="vertical-menu">
-		<div class="logo">LĄGO</div>
+		<div class="logo"><img src="<c:url value="/images/logo_browarmistrz.png"/>"/></div>
 		<a href="<c:url value="/#" />">Home</a>
 		<a href="<c:url value="/recipe/publicrecipes" />">Przepisy publiczne</a>
 		<a href="<c:url value="/recipe/calculateABV" />">Kalkulator alkoholu</a>

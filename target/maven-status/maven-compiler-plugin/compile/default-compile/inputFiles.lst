@@ -14,7 +14,6 @@
 /home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/repositories/UserRepository.java
 /home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/AppInitializer.java
 /home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/repositories/YeastRepository.java
-/home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/entities/CalculatorABV.java
 /home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/converters/MaltConverter.java
 /home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/repositories/BeerStyleRepository.java
 /home/pawel/spring_workspace/Browarmistrz/src/main/java/pl/browarmistrz/repositories/UserRolesRepository.java

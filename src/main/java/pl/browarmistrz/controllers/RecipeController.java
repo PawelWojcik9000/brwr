@@ -159,8 +159,14 @@ public class RecipeController {
 	public String brewRecipe(@PathVariable int id, Model model) {
 		setLoggedUserAttribute(model);
 		Recipe recipe = recipeRepository.findOne(id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String loggedUserName = auth.getName();
 		hibInitializeMaltsAdditionsHops(recipe);
 		if(recipe.isPublicRecipe()) {
+			model.addAttribute("recipe", recipe);
+			model.addAttribute("waterAmount", recipe.countWaterAmount());
+			return "brewrecipe";
+		} else if(!recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
 			model.addAttribute("recipe", recipe);
 			model.addAttribute("waterAmount", recipe.countWaterAmount());
 			return "brewrecipe";

@@ -15,7 +15,7 @@
 <body>
 
 	<section class="vertical-menu">
-		<div class="logo">LĄGO</div>
+		<div class="logo"><img src="<c:url value="/images/logo_browarmistrz.png"/>"/></div>
 		<a href="<c:url value="/#" />">Home</a>
 		<a href="<c:url value="/recipe/publicrecipes" />">Przepisy publiczne</a>
 		<a href="<c:url value="/recipe/calculateABV" />">Kalkulator alkoholu</a>
@@ -124,6 +124,20 @@
 											</ul>
 										</c:otherwise>
 									</c:choose>
+								</c:if>
+								<c:if test="${addition.additionUse eq 'additionEffervescentFermentation'}">
+									<ul class="addition">
+											<li>
+												${addition.additionName} dodaj ${addition.additionTime} dni przed końcem cichej fermentacji.
+											</li>
+										</ul>
+								</c:if>
+								<c:if test="${addition.additionUse eq 'additionSecondFermentation'}">
+									<ul class="addition">
+											<li>
+												${addition.additionName} dodaj ${addition.additionTime} dni przed końcem cichej fermentacji.
+											</li>
+										</ul>
 								</c:if>
 							</c:forEach>
 						</c:if>

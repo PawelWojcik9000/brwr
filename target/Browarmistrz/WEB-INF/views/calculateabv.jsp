@@ -12,7 +12,7 @@
 <body>
 
 	<section class="vertical-menu">
-		<div class="logo">LĄGO</div>
+		<div class="logo"><img src="<c:url value="/images/logo_browarmistrz.png"/>"/></div>
 		<a href="<c:url value="/#" />">Home</a> 
 		<a href="<c:url value="/recipe/publicrecipes" />">Przepisy publiczne</a>
 		<a href="<c:url value="/recipe/calculateABV" />" class="active">Kalkulator alkoholu</a>
@@ -31,11 +31,7 @@
 	</section>
 
 	<section class="main">
-		<form action="/Browarmistrz/recipe/calculateABV" method="POST">
-			<input type="text" name="param1" />
-			<input type="submit" value="dupa" />
-		</form>
-		<%--<form:form method="post" modelAttribute="calculator">
+		<form:form action="" method="POST">
 			<table class="public-recipe-table">
 				<tr>
 					<th colspan="2"> Oblicz zawartość alkoholu</th>
@@ -43,15 +39,13 @@
 				<tr>
 					<th>Początkowe BLG: </th>
 					<td>
-						<form:input path="og" />
-						<form:errors path="og" cssClass="error" />
+						<input type="number" step="0.1" name="og" />
 					</td>
 				</tr>
 				<tr>
 					<th>Końcowe BLG: </th>
 					<td>
-						<form:input path="fg" />
-						<form:errors path="fg" cssClass="error" />
+						<input type="number" step="0.1" name="fg" />
 					</td>
 				</tr>
 				<tr>
@@ -59,14 +53,12 @@
 						<input type="submit" value="Oblicz">
 					</td>
 				</tr>
-				<c:if test="${not empty abv}">
-					<tr>
-						<th>ABV: </th>
-						<td>${abv}</td>
-					</tr>
-				</c:if>
+				<tr>
+					<th>ABV: </th>
+					<td>${abv}</td>
+				</tr>
 			</table>
-		</form:form> --%>
+		</form:form>
 	</section>
 </body>
 </html>
