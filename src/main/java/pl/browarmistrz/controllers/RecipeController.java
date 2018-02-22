@@ -232,6 +232,10 @@ public class RecipeController {
 			alcoholByVolume = "Brak danych wejściowych";
 			model.addAttribute("abv", alcoholByVolume);
 			return "calculateabv";
+		} catch (IndexOutOfBoundsException e) {
+			alcoholByVolume = "Wartości muszą się różnić";
+			model.addAttribute("abv", alcoholByVolume);
+			return "calculateabv";
 		}
 		
 		if(og <= 0 || fg <= 0) {
