@@ -137,11 +137,7 @@ public class RecipeController {
 		model.addAttribute("loggeduser", loggedUserName);
 		Recipe recipe = recipeRepository.findOne(id);
 		hibInitializeMaltsAdditionsHops(recipe);
-		if(recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
-			model.addAttribute("recipe", recipe);
-			model.addAttribute("showeditdelete", true);
-			return "showrecipe";
-		} else if(!recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
+		if(recipe.getUser().getUserName().equals(loggedUserName)) {
 			model.addAttribute("recipe", recipe);
 			model.addAttribute("showeditdelete", true);
 			return "showrecipe";
@@ -162,11 +158,7 @@ public class RecipeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String loggedUserName = auth.getName();
 		hibInitializeMaltsAdditionsHops(recipe);
-		if(recipe.isPublicRecipe()) {
-			model.addAttribute("recipe", recipe);
-			model.addAttribute("waterAmount", recipe.countWaterAmount());
-			return "brewrecipe";
-		} else if(!recipe.isPublicRecipe() && recipe.getUser().getUserName().equals(loggedUserName)) {
+		if(recipe.isPublicRecipe() || recipe.getUser().getUserName().equals(loggedUserName)) {
 			model.addAttribute("recipe", recipe);
 			model.addAttribute("waterAmount", recipe.countWaterAmount());
 			return "brewrecipe";
