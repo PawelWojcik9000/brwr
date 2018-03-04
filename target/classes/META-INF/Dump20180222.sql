@@ -23,7 +23,7 @@ USE `browarmistrz`;
 
 LOCK TABLES `additions` WRITE;
 /*!40000 ALTER TABLE `additions` DISABLE KEYS */;
-INSERT INTO `additions` (`id`, `additionName`, `additionTime`, `additionUse`, `recipe_id`) VALUES (1,'Wanilia','3','additionSecondFermentation',1),(2,'Platki pszenne','40','additionBoiled',1);
+INSERT INTO `additions` (`id`, `additionName`, `additionTime`, `additionUse`, `recipe_id`) VALUES (1,'Wanilia','3','additionSecondFermentation',1),(2,'Płatki pszenne','40','additionBoiled',1);
 /*!40000 ALTER TABLE `additions` ENABLE KEYS */;
 UNLOCK TABLES;
 
