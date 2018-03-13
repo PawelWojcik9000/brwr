@@ -16,6 +16,7 @@ Aplikacja korzysta z bazy danych MySQL. Aby uruchomić program na serwerze, trze
 w pliku konfiguracyjnym persistence.xml. Domyślnie ustawione dane logowania: 
 - login: root
 - hasło: coderslab
+
 W zrzucie bazy danych, który ładowany jest przy uruchomieniu aplikacji, założone są dwa konta: administratora oraz zwykłego 
 użytkownika. Dane logowania: 
 ###### Admin
