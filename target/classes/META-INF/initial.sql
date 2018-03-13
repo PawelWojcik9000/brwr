@@ -17,6 +17,8 @@ USE `browarmistrz`;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+ALTER DATABASE browarmistrz DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+
 --
 -- Dumping data for table `additions`
 --
