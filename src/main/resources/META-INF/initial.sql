@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `browarmistrz` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE  IF NOT EXISTS `browarmistrz` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `browarmistrz`;
 -- MySQL dump 10.13  Distrib 5.7.21, for Linux (x86_64)
 --
@@ -23,7 +23,7 @@ USE `browarmistrz`;
 
 LOCK TABLES `additions` WRITE;
 /*!40000 ALTER TABLE `additions` DISABLE KEYS */;
-INSERT INTO `additions` (`id`, `additionName`, `additionTime`, `additionUse`, `recipe_id`) VALUES (1,'Wanilia','3','additionSecondFermentation',1),(2,'Platki pszenne','40','additionBoiled',1);
+INSERT INTO `additions` (`id`, `additionName`, `additionTime`, `additionUse`, `recipe_id`) VALUES (1,'Wanilia','3','additionSecondFermentation',1),(2,'Platki owsiane','0.1','additionBoiled',1);
 /*!40000 ALTER TABLE `additions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -38,22 +38,12 @@ INSERT INTO `beerstyles` (`id`, `ABV`, `FG`, `IBU`, `OG`, `SRM`, `styleName`) VA
 UNLOCK TABLES;
 
 --
--- Dumping data for table `hibernate_sequence`
---
-
-LOCK TABLES `hibernate_sequence` WRITE;
-/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` (`next_val`) VALUES (1),(1);
-/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `hops`
 --
 
 LOCK TABLES `hops` WRITE;
 /*!40000 ALTER TABLE `hops` DISABLE KEYS */;
-INSERT INTO `hops` (`id`, `hopBoilTime`, `hopName`, `hopWeight`, `recipe_id`) VALUES (1,10,'Columbus',30,1),(2,20,'Citra',30,1),(3,30,'Amarillo',30,1);
+INSERT INTO `hops` (`id`, `hopBoilTime`, `hopName`, `hopWeight`, `recipe_id`) VALUES (1,0.15,'Columbus',30,1),(2,0.2,'Citra',30,1),(3,0.3,'Amarillo',30,1);
 /*!40000 ALTER TABLE `hops` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,38 +63,8 @@ UNLOCK TABLES;
 
 LOCK TABLES `recipes` WRITE;
 /*!40000 ALTER TABLE `recipes` DISABLE KEYS */;
-INSERT INTO `recipes` (`id`, `added`, `boilTime`, `brewName`, `brewSize`, `brewed`, `brewedRecipe`, `mashTemp`, `mashTime`, `publicRecipe`, `beerStyle_id`, `user_userid`, `yeast_id`) VALUES (1,'2018-02-22 19:59:16',40,'Demonstracyjne pszeniczne',20,NULL,'\0',66,15,'',1,2,1);
+INSERT INTO `recipes` (`id`, `added`, `boilTime`, `brewName`, `brewSize`, `brewed`, `brewedRecipe`, `mashTemp`, `mashTime`, `publicRecipe`, `beerStyle_id`, `user_userid`, `yeast_id`) VALUES (1,'2018-02-22 19:59:16',0.3,'Demonstracyjne pszeniczne',20,NULL,'\0',66,60,'',1,2,1);
 /*!40000 ALTER TABLE `recipes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `recipes_additions`
---
-
-LOCK TABLES `recipes_additions` WRITE;
-/*!40000 ALTER TABLE `recipes_additions` DISABLE KEYS */;
-INSERT INTO `recipes_additions` (`Recipe_id`, `additions_id`) VALUES (1,1);
-/*!40000 ALTER TABLE `recipes_additions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `recipes_hops`
---
-
-LOCK TABLES `recipes_hops` WRITE;
-/*!40000 ALTER TABLE `recipes_hops` DISABLE KEYS */;
-INSERT INTO `recipes_hops` (`Recipe_id`, `hops_id`) VALUES (1,1),(2,2);
-/*!40000 ALTER TABLE `recipes_hops` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `recipes_malts`
---
-
-LOCK TABLES `recipes_malts` WRITE;
-/*!40000 ALTER TABLE `recipes_malts` DISABLE KEYS */;
-INSERT INTO `recipes_malts` (`Recipe_id`, `malts_id`) VALUES (1,1),(1,2);
-/*!40000 ALTER TABLE `recipes_malts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -113,7 +73,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` (`user_role_id`, `role`, `userid`) VALUES (1,'ROLE_ADMIN',1),(2,'ROLE_USER',1),(3,'ROLE_USER',2),(4,'ROLE_USER',3);
+INSERT INTO `user_roles` (`user_role_id`, `role`, `userid`) VALUES (1,'ROLE_ADMIN',1),(2,'ROLE_USER',1),(3,'ROLE_USER',2);
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
