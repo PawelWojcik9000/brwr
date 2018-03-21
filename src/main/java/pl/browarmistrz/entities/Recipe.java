@@ -26,6 +26,8 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "recipes")
 public class Recipe {
+	
+	private final static int MULTIPLY_MALT_WEIGHT = 3;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,7 +90,7 @@ public class Recipe {
 		for(Malt malt : malts) {
 			waterAmount += malt.getMaltWeight();
 		}
-		return waterAmount*3;
+		return waterAmount*MULTIPLY_MALT_WEIGHT;
 	}
 	
 	public int getId() {
